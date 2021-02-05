@@ -9,7 +9,7 @@ fn main() {
     let mut population = generate_initial_population(); // [Solution; 100]
     //let mut best_mutation = Solution{..Default::default()};
 
-    for i in 0..20000000 {
+    for i in 0..100000 {
     //for _ in 0..ITERATIONS {
         let sorted_population = grade_population(population); // Returns sorted by grade
         let best_mutation = sorted_population[0]; // Saves best mutation
@@ -132,7 +132,7 @@ fn generate_initial_population() -> [Solution; 100] {
 
     for solution in 0..100 {
         for index in 0..30 {
-            population[solution].sequence[index] = rng.gen_range(0..3);
+            population[solution].sequence[index] = rng.gen_range(0..4);
         }
     }
 
