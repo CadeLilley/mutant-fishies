@@ -3,23 +3,9 @@ use std::cmp::min;
 use std::cmp::max;
 
 use rand::{thread_rng, Rng};
-//static &'static population_size: usize = 100;
-//static ITERATIONS: usize = 1000;
+
 
 fn main() {
-
-    simulate();
-    /*
-    for row in 0..5 {
-        for col in 0..4 {
-            print!("{} ", fish_map[row][col]);
-        }
-        println!("");
-    }
-    */
-}
-
-fn simulate() {
     let mut population = generate_initial_population(); // [Solution; 100]
     //let mut best_mutation = Solution{..Default::default()};
 
@@ -36,24 +22,10 @@ fn simulate() {
         }
         population = mutate(sorted_population);
     }
-
-    /*
-    for solution in population.iter() {
-        print!("{}: ", solution.grade);
-        for m in solution.sequence.iter() {
-            print!("{}", m);
-        }
-        println!("");
-    }
-    */
-
 }
 
 fn mutate(mut population: [Solution; 100]) -> [Solution; 100] {
     let mut rng = thread_rng();
-    //let propogation_rate = 0.1;
-
-    //let max_propogate =  10; //???????????????????
 
     // Save the top 10 for the next generation
 
@@ -95,7 +67,7 @@ fn mutate(mut population: [Solution; 100]) -> [Solution; 100] {
         }
     }
 
-    // Completely randomly generate the last ten of the population
+    // Randomly generate the last ten of the population
     let temp_gen = generate_initial_population();
     for i in 90..100 {
         population[i] = temp_gen[i];
@@ -263,15 +235,3 @@ impl PartialEq for Solution {
 }
 
 impl Eq for Solution { }
-
-
-/*
-let temp_sol = Solution { grade: 0.231, sequence: [0; 30] };
-match population[0].grade.partial_cmp(&temp_sol.grade).unwrap() {
-    Ordering::Equal => println!("ORDERING!"),
-    Ordering::Less => println!("LESS"),
-    Ordering::Greater => println!("Greater"),
-    _ => println!("No ord")
-}
-//println!("{:?}", population[0].partial_cmp(&population[1]).unwrap());
-*/
