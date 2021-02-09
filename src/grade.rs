@@ -1,48 +1,52 @@
-// Hard code in sequences to get scores
+// grade.rs
+// CS 487 Pacific Lutheran University
+// Author: Cade Lilley - lilleycr@plu.edu
+// Takes parameterized sequences for fish project, see key below
+// Throws error if values are not 0, 1, 2, or 3
+// Throws error if sequences are not of length 30
+
+// Example:
+// grade 010101010101010101010101010101 230 notasequence55
+// OUTPUT:
+// 010101010101010101010101010101 -39.72169735115254
+// 230 -1 ERROR: Found length 3, expected length 30:
+// notasequence55 0 ERROR: Found length 14, expected length 30: ERROR: Error parsing move sequence. Only 0, 1, 2, and 3 are allowed:
+
 // 0 = "LEFT"
 // 1 = "RIGHT"
 // 2 = "UP"
 // 3 = "DOWN"
 
-/*
-"332323232301003232323232101100",
-"332300103232112300323232112323",
-"332323230123003232103232103211",
-"332323232301001032323232103211",
-"330123232323001032323232103211",
-"332301230032112323003232323211",
-"330123230123230032321032323211",
-"332323003232323210110123230032",
-"332323003232110032321123230032",
-"330032323232110123232323010032",
-"330123001123232300323232321032",
-"330123232301230032323232101032",
-"330101012323232300323232321032",
-"330032112323230123001032323232",
-"332301232301230010321032323232",
-"330123232301230100103232323232",
-"330032103232323211012323230123",
-"330032321101232323003232321123"
-*/
+use std::env; // Used to read in parameters
 
 fn main() {
-    let sequences = ["332323232301003232323232101100", "330032321101232323003232321123"];
+
+    let sequences: Vec<String> = env::args().collect(); // Collects all inputs from args() iter
+    //eprintln!("{:?}", sequences);
 
     let base_state = build_state();
-    for i in 0..sequences.len() {
+    for i in 1..sequences.len() { // Starts at index 1 to ignore file origin directory parameter
+        let mut parsing_error = false;
         let mut cur_state = base_state;
-        print!("{}   ", sequences[i]);
         for char in sequences[i].chars() {
             match char {
                 '0' => cur_state = turn(0, cur_state),
                 '1' => cur_state = turn(1, cur_state),
                 '2' => cur_state = turn(2, cur_state),
                 '3' => cur_state = turn(3, cur_state),
-                _ => eprintln!("Move not in bounds. Only 0, 1, 2, and 3 are allowed")
+                _ => parsing_error = true
             }
         }
-        println!("{}", cur_state.score);
+        eprint!("{} {} ", sequences[i], cur_state.score);
+        if sequences[i].len() != 30 {
+            eprint!("ERROR: Found length {}, expected length 30: ", sequences[i].len());
+        }
+        if parsing_error {
+            eprint!("ERROR: Error parsing move sequence. Only 0, 1, 2, and 3 are allowed: ")
+        }
+        eprintln!(""); // Ends line
     }
+
 }
 
 fn turn(dir: usize, mut state: State) -> State {
